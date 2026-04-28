@@ -56,11 +56,11 @@ def get_alerts(db: Session = Depends(get_db)):
     for alert, event in alerts:
         result.append({
             "id": str(alert.alert_id),
-            "timestamp": event.event_timestamp.strftime("%d/%m %H:%M:%S") if event.event_timestamp else alert.created_at.strftime("%d/%m %H:%M:%S"),
-            "user": event.user_email,
+            "timestamp": event.event_timestamp.strftime("%d/%m %H:%M:%S") if event.event_timestamp else (alert.created_at.strftime("%d/%m %H:%M:%S") if alert.created_at else ""),
+            "user": event.user_email or "Unknown",
             "system": event.normalized_json.get('source', 'Unknown') if event.normalized_json else 'Unknown',
-            "event": event.event_type,
-            "status": alert.alert_status.lower(),
+            "event": event.event_type or "Unknown",
+            "status": alert.alert_status.lower() if alert.alert_status else "open",
             "riskScore": float(alert.risk_percent) if alert.risk_percent else 0,
             "severity": alert.severity.lower() if alert.severity else 'medium',
             "reason": alert.anomaly_reason,
