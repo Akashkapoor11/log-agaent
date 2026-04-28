@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from 'react'
-import TopBar from './components/TopBar.jsx'
-import Taskbar from './components/Taskbar.jsx'
+import TopBar from './components/layout/TopBar.jsx'
+import Taskbar from './components/layout/Taskbar.jsx'
 import HomeScreen from './components/HomeScreen.jsx'
 import Dashboard from './components/pages/Dashboard.jsx'
 import Alerts from './components/pages/Alerts.jsx'
@@ -10,6 +10,7 @@ import ReadOnlyPanel from './components/pages/ReadOnlyPanel.jsx'
 import ProfileModal from './components/modals/ProfileModal.jsx'
 import NotificationPanel from './components/modals/NotificationPanel.jsx'
 import AlertDetailModal from './components/modals/AlertDetailModal.jsx'
+import { fetchAll } from './api/index.js'
 
 const currentUser = 'IT Admin'
 
@@ -28,16 +29,7 @@ export default function App() {
   const [selectedAlert, setSelectedAlert] = useState(null)
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL || '';
-    const safeFetch = (url, fallback) =>
-      fetch(url).then(res => { if (!res.ok) throw new Error(res.status); return res.json(); }).catch(err => { console.error(`Fetch failed: ${url}`, err); return fallback; });
-
-    Promise.all([
-      safeFetch(`${apiUrl}/api/alerts`, []),
-      safeFetch(`${apiUrl}/api/logs/normalized`, []),
-      safeFetch(`${apiUrl}/api/stats`, null),
-      safeFetch(`${apiUrl}/api/audit`, [])
-    ]).then(([alertsData, logsData, statsData, auditData]) => {
+    fetchAll().then(([alertsData, logsData, statsData, auditData]) => {
       if (!statsData) setApiError(true)
       setAlerts(alertsData || [])
       setAnalyzedLogs(logsData || [])
