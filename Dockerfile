@@ -2,10 +2,10 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY milan-be/requirements.txt .
+COPY Milan-be/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY milan-be/ .
+COPY Milan-be/ .
 
 EXPOSE 5000
 
