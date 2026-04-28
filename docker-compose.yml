@@ -18,8 +18,6 @@ services:
 
   be:
     build: ./milan-be
-    ports:
-      - "5001:5000"
     environment:
       DB_CON_STR: postgresql+psycopg2://postgres:postgres@db:5432/chitti_apps
     depends_on:
@@ -30,7 +28,7 @@ services:
     build:
       context: ./milan-fe
       args:
-        VITE_API_URL: http://134.33.132.134/milan-aegis
+        VITE_API_URL: /milan-aegis
     ports:
       - "5000:5000"
     depends_on:
