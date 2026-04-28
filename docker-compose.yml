@@ -17,9 +17,7 @@ services:
       retries: 10
 
   be:
-    build:
-      context: .
-      dockerfile: Milan-be/Dockerfile
+    build: ./Milan-be
     ports:
       - "5001:5000"
     environment:
