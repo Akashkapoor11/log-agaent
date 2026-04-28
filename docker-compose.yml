@@ -30,7 +30,7 @@ services:
       args:
         VITE_API_URL: /milan-aegis
     ports:
-      - "5000:5000"
+      - "80:5000"
     depends_on:
       - be
 
